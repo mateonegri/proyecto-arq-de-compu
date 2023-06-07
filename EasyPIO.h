@@ -14,11 +14,11 @@
 #define EASY_PIO_H
 
 // Include statements
-#include <sys/mman.h>
+// #include <sys/mman.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include <unistd.h>
+// #include <unistd.h>
 
 /////////////////////////////////////////////////////////////////////
 // Constants
