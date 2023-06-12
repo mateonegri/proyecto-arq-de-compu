@@ -18,6 +18,7 @@ monstruo_start:
 loop: LDRB R6,[R5],#1
       MOV R0,R6
       BL disp_binary //Cambiar el dispbinary xq los leds son active low
+      ADD R4,R4,#1
       MOV R0, R7
       BL delayAssembly
       CMP R0, #0
@@ -28,7 +29,7 @@ loop: LDRB R6,[R5],#1
       BEQ monstruo_start
       B loop
 
- end:     POP {R4,R5,R6,PC}
+ end:     POP {R4, R5, R6, R7, PC}
 
 .global atrapaditas
 atrapaditas: 

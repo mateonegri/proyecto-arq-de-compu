@@ -13,11 +13,17 @@
 //#include <unistd.h>
 //#include <ncurses.h>
 
+//extern void monstruo();
+//extern void atrapaditas();
+
+
+
+
 #define ENTER 13
 #define BACKSPACE 8
 
-    char password[6];
-    char letra;
+char password[6];
+char letra;
     
 ////Valor global del delay
    // int tiempo = 2000;
@@ -67,16 +73,20 @@ unsigned char TablaMn[] = {0x80, 0x81, 0x82, 0x84, 0x88, 0x90, 0xA0, 0xC0, 0xFF}
  // Funcion para mostrar en binario
 void disp_binary(int i) {
     int t;
+    int n;
     const char led[] = {7, 8, 25, 24, 23, 18, 15, 14};
     //system("cls");
     for (t = 128; t > 0; t = t/2) {
+
         if ( i & t) {
             printf("1");
-            //digitalWrite(led[i], 1);
+            //digitalWrite(led[n], 0);
         } else {
             printf("0");
-            //digitalWrite(led[i], 0);
+            //digitalWrite(led[n], 1);
         }
+
+        n++;
     }
      printf("\n");
 } 
@@ -162,14 +172,13 @@ int delayAssembly(int tiempo){
                 }
 
                 if (input2 == 72) { // si input es up key 
-                    resultado = tiempo + 1500;
+                    resultado = tiempo - 500;
                 }
 
                 if (input2 == 80) { // si input es down key
-                    resultado = tiempo - 1500;
+                    resultado = tiempo + 500;
                 }  
 
-                printf("tiempo %d", tiempo);
                 } else {
                     return resultado = 0;
                 }
@@ -207,19 +216,18 @@ void autoFantastico() {
                 input2 = getch();
 
                 if (input2 != 72 && input2 != 80) {
-                    printf("ACA");
+                   
                     return;
                 }
 
                 if (input2 == 72) { // si input es up key 
-                    tiempo = tiempo + 1500;
+                    tiempo = tiempo - 500;
                 }
 
                 if (input2 == 80) { // si input es down key
-                    tiempo = tiempo - 1500;
+                    tiempo = tiempo + 500;
                 }  
 
-                printf("tiempo %d", tiempo);
                 } else {
                     return;
                 }
@@ -230,7 +238,7 @@ void autoFantastico() {
             output = output >> 1; // Right shift
         }
 
-        printf("tiempo %d", tiempo);
+   
 
         output = 0x01;
         for (t = 0; t < 6; t++) {
@@ -242,19 +250,18 @@ void autoFantastico() {
                 input2 = getch();
 
                 if (input2 != 72 && input2 != 80) {
-                    printf("ACA");
+                   
                     return;
                 }
 
                 if (input2 == 72) { // si input es up key 
-                    tiempo = tiempo + 1500;
+                    tiempo = tiempo - 500;
                 }
 
                 if (input2 == 80) { // si input es down key
-                    tiempo = tiempo - 1500;
+                    tiempo = tiempo + 500;
                 }  
 
-                printf("tiempo %d", tiempo);
                 } else {
                     return;
                 }
@@ -292,19 +299,18 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                 input2 = getch();
 
                 if (input2 != 72 && input2 != 80) {
-                    printf("ACA");
+               
                     return;
                 }
 
                 if (input2 == 72) { // si input es up key 
-                    tiempo = tiempo + 1500;
+                    tiempo = tiempo - 500;
                 }
 
                 if (input2 == 80) { // si input es down key
-                    tiempo = tiempo - 1500;
+                    tiempo = tiempo + 500;
                 }  
 
-                printf("tiempo %d", tiempo);
                 } else {
                     return;
                 }
@@ -339,19 +345,17 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                 input2 = getch();
 
                 if (input2 != 72 && input2 != 80) {
-                    printf("ACA");
                     return;
                 }
 
                 if (input2 == 72) { // si input es up key 
-                    tiempo = tiempo + 1500;
+                    tiempo = tiempo - 500;
                 }
 
                 if (input2 == 80) { // si input es down key
-                    tiempo = tiempo - 1500;
+                    tiempo = tiempo + 500;
                 }  
 
-                printf("tiempo %d", tiempo);
                 } else {
                     return;
                 }
@@ -387,19 +391,17 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                 input2 = getch();
 
                 if (input2 != 72 && input2 != 80) {
-                    printf("ACA");
                     return;
                 }
 
                 if (input2 == 72) { // si input es up key 
-                    tiempo = tiempo + 1500;
+                    tiempo = tiempo - 500;
                 }
 
                 if (input2 == 80) { // si input es down key
-                    tiempo = tiempo - 1500;
+                    tiempo = tiempo + 500;
                 }  
 
-                printf("tiempo %d", tiempo);
                 } else {
                     return;
                 }
@@ -437,19 +439,17 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                 input2 = getch();
 
                 if (input2 != 72 && input2 != 80) {
-                    printf("ACA");
                     return;
                 }
 
                 if (input2 == 72) { // si input es up key 
-                    tiempo = tiempo + 1500;
+                    tiempo = tiempo - 500;
                 }
 
                 if (input2 == 80) { // si input es down key
-                    tiempo = tiempo - 1500;
+                    tiempo = tiempo + 500;
                 }  
 
-                printf("tiempo %d", tiempo);
                 } else {
                     return;
                 }
@@ -470,19 +470,17 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                 input2 = getch();
 
                 if (input2 != 72 && input2 != 80) {
-                    printf("ACA");
                     return;
                 }
 
                 if (input2 == 72) { // si input es up key 
-                    tiempo = tiempo + 1500;
+                    tiempo = tiempo - 500;
                 }
 
                 if (input2 == 80) { // si input es down key
-                    tiempo = tiempo - 1500;
+                    tiempo = tiempo + 500;
                 }  
 
-                printf("tiempo %d", tiempo);
                 } else {
                     return;
                 }
@@ -503,19 +501,17 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                 input2 = getch();
 
                 if (input2 != 72 && input2 != 80) {
-                    printf("ACA");
                     return;
                 }
 
                 if (input2 == 72) { // si input es up key 
-                    tiempo = tiempo + 1500;
+                    tiempo = tiempo - 500;
                 }
 
                 if (input2 == 80) { // si input es down key
-                    tiempo = tiempo - 1500;
+                    tiempo = tiempo + 500;
                 }  
 
-                printf("tiempo %d", tiempo);
                 } else {
                     return;
                 }
@@ -537,19 +533,17 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                 input2 = getch();
 
                 if (input2 != 72 && input2 != 80) {
-                    printf("ACA");
                     return;
                 }
 
                 if (input2 == 72) { // si input es up key 
-                    tiempo = tiempo + 1500;
+                    tiempo = tiempo - 500;
                 }
 
                 if (input2 == 80) { // si input es down key
-                    tiempo = tiempo - 1500;
+                    tiempo = tiempo + 500;
                 }  
 
-                printf("tiempo %d", tiempo);
                 } else {
                     return;
                 }
@@ -565,41 +559,6 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
 
 
 }
-
-void pressKeyCheck() {
-
-    int input1, input2;
-    int tiempo = 100;
-
-    int b = 1;
-
-    while (b) {
-     if (kbhit()) {
-                input1 = getch();
-
-                printf("INPUT 1: %c", input1);
-
-                if (input1 == 224) {
-
-                input2 = getch();
-
-                if (input2 == 72) { // si input es up key 
-                    tiempo = tiempo + 15;
-                }
-
-                if (input2 == 80) { // si input es down key
-                    tiempo = tiempo - 15;
-                }  
-
-                printf("INPUT 2 %c", input2);
-                printf("tiempo %d", tiempo);
-                }
-     }
-
-            }
-}
-
-
 
 
 int main()
