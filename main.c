@@ -5,13 +5,13 @@
 
 //comentar este conio.h
 
-#include <conio.h> // getch para liux usar ncurses.h
+//#include <conio.h> // getch para liux usar ncurses.h
 
 //descomentar estos 3 include
 
-//include <termios.h>
-//#include <unistd.h>
-//#include <ncurses.h>
+#include <termios.h>
+#include <unistd.h>
+#include <ncurses.h>
 
 //extern void monstruo();
 //extern void atrapaditas();
@@ -39,7 +39,7 @@ unsigned char TablaMn[] = {0x80, 0x81, 0x82, 0x84, 0x88, 0x90, 0xA0, 0xC0, 0xFF}
 
 //descomentar esta funcion
 
-/*  int kbhit()
+ int kbhit()
 {
     struct termios oldt, newt;
     int ch;
@@ -68,7 +68,7 @@ unsigned char TablaMn[] = {0x80, 0x81, 0x82, 0x84, 0x88, 0x90, 0xA0, 0xC0, 0xFF}
 
     tcsetattr(STDIN_FILENO, TCSANOW, &oldt);
     return 0;
-} */ 
+} 
 
  // Funcion para mostrar en binario
 void disp_binary(int i) {
@@ -88,27 +88,27 @@ void disp_binary(int i) {
 
         n++;
     }
-     printf("\n");
+     printf("\n\r");
 } 
 
 /////////////////Comprobar Contraseña///////////////////////////
 int ingreso(){	
 
     int intentos = 3;
-    char inputPassword[50];
+    char inputPassword[5];
     char caracter;
-    int resultado = -1, i;
+    int resultado = -1, i = 0;
 
     while (intentos > 0) {
-        printf("Ingrese su password de 5 digitos : \n");
+        printf("Ingrese su password de 5 digitos : \n\r");
         //fgets(inputPassword, sizeof(inputPassword), stdin);
 
         //printf("%s", inputPassword);
 
-        //inputPassword[strcspn(inputPassword, "\n")] = 0;
+        //inputPassword[strcspn(inputPassword, "\n\r")] = 0;
 
-       for (i = 0; i < 50; i++) {
-            caracter = getch();
+        for (i = 0; i < 5; i++) {
+            caracter = getchar();
 
             if (caracter == ENTER) {
                 break;
@@ -116,20 +116,46 @@ int ingreso(){
                 inputPassword[i] = caracter;
                 printf("*");
             }
-        }
+        }  
 
-        // inputPassword[i] = '\0';
+        //inputPassword[i] = '\0';
 
-        // resultado = comparePasswords(inputPassword);
+        //resultado = comparePasswords(inputPassword);
+/* 
+        while(1) {
+            caracter = getchar();
+
+            if ( caracter == '\n\r') {
+                inputPassword[i] = '\0';
+                break;
+            } else if (caracter == 127 || caracter == '\b') {
+                if (i > 0) {
+                    i--;
+                    printf("\b \b");
+                } else {
+                    if ( i < 5) {
+                        printf("*");
+                        inputPassword[i] = caracter;
+                        i++;
+                    }
+                }
+
+                if (i == 5) {
+                    break;
+                }
+            }
+        } */
+
+        inputPassword[i] = '\0';
 
         resultado = strcmp(inputPassword,"admin");
 
-        printf("\n");
+        printf("\n\r");
 
         if (resultado == 0) {
             return 1;
         } else {
-            printf("Password no valida!\n");
+            printf("Password no valida!\n\r");
             intentos--;
         }
     }
@@ -160,10 +186,10 @@ int delayAssembly(int tiempo){
     unsigned int j = 0x2fffff; //raspberry 0x3fffff;
     for (i = 0; i < tiempo; i++) {
         for (j = 0; j < 65535; ++j) {
-            if (kbhit()) {
+            /* if (kbhit()) {
                 input1 = getch();
 
-                if (input1 == 224){
+                if (KEY_UP == 224){
 
                 input2 = getch();
 
@@ -181,10 +207,21 @@ int delayAssembly(int tiempo){
 
                 } else {
                     return resultado = 0;
+                } */
+                keypad(stdscr, TRUE);
+                nodelay(stdscr, TRUE);
+                switch (getch()) {
+                case 'a':
+                    return;
+                case KEY_UP:
+                resultado = tiempo - 500;
+                break;
+                case KEY_DOWN:
+                resultado = tiempo + 500;
+                break;
                 }
         }
         //while (j) j--;
-    }
     }
 
     return resultado;
@@ -199,17 +236,19 @@ void autoFantastico() {
 
     int tiempo = 2000;
 
-    printf("Estas viendo el Auto Fantastico!\n");
-    printf("Presione la tecla 'a' si quiere salir!\n");
-    printf("Presione la flecha hacia arriba para aumentar la velocidad!\n");
-    printf("Presione la flecha hacia abajo para disminuir la velocidad!\n");
+    printf("Estas viendo el Auto Fantastico!\n\r");
+    printf("Presione la tecla 'a' si quiere salir!\n\r");
+    printf("Presione la flecha hacia arriba para aumentar la velocidad!\n\r");
+    printf("Presione la flecha hacia abajo para disminuir la velocidad!\n\r");
 
     do {
 
         output = 0x80;
         for (t = 0; t < 8; t++ ) {
-            if (kbhit()) {
+            /* if (kbhit()) {
                 input1 = getch();
+
+                printf("%d", &input1);
 
                 if (input1 == 224){
 
@@ -232,7 +271,25 @@ void autoFantastico() {
                     return;
                 }
 
-                } 
+                }  */
+
+                keypad(stdscr, TRUE);
+                nodelay(stdscr, TRUE);
+                switch (getch()) {
+                case 'a':
+                    return;
+                case KEY_UP:
+                tiempo = tiempo - 500;
+                
+                break;
+                case KEY_DOWN:
+                tiempo = tiempo + 500;
+                
+                break;
+                }
+
+
+            
             disp_binary(output);
             delay(tiempo);
             output = output >> 1; // Right shift
@@ -242,7 +299,7 @@ void autoFantastico() {
 
         output = 0x01;
         for (t = 0; t < 6; t++) {
-             if (kbhit()) {
+             /* if (kbhit()) {
                 input1 = getch();
 
                 if (input1 == 224){
@@ -266,7 +323,22 @@ void autoFantastico() {
                     return;
                 }
 
-                } 
+                }  */
+
+
+                keypad(stdscr, TRUE);
+                nodelay(stdscr, TRUE);
+                switch (getch()) {
+                case 'a':
+                    return;
+                case KEY_UP:
+                tiempo = tiempo - 500;
+                break;
+                case KEY_DOWN:
+                tiempo = tiempo + 500;
+                break;
+                }
+
             output = output << 1;
             disp_binary(output);
             delay(tiempo);
@@ -291,7 +363,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
         for (int i = 0; i<16; i++ )
         {
             int valor = TablaCa[i];
-               if (kbhit()) {
+              /*  if (kbhit()) {
                 input1 = getch();
 
                 if (input1 == 224){
@@ -313,14 +385,25 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
 
                 } else {
                     return;
-                }
+                } */
 
-                } 
+                keypad(stdscr, TRUE);
+                nodelay(stdscr, TRUE);
+                switch (getch()) {
+                case 'a':
+                    return;
+                case KEY_UP:
+                tiempo = tiempo - 500;
+                break;
+                case KEY_DOWN:
+                tiempo = tiempo + 500;
+                break;
+                }
             disp_binary(valor);
             delay(tiempo);
             } 
-        }
-};
+    }
+}
 
 //////////////// choque hecho por tabla (no se puede de otra forma)//////////
 void ChoqueT() {
@@ -337,7 +420,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
         for (int i = 0; i<8; i++ )
         {
             int valor = TablaCh[i];
-            if (kbhit()) {
+            /* if (kbhit()) {
                 input1 = getch();
 
                 if (input1 == 224){
@@ -360,7 +443,19 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                     return;
                 }
 
-                } 
+                }  */
+                keypad(stdscr, TRUE);
+                nodelay(stdscr, TRUE);
+                switch (getch()) {
+                case 'a':
+                    return;
+                case KEY_UP:
+                tiempo = tiempo - 500;
+                break;
+                case KEY_DOWN:
+                tiempo = tiempo + 500;
+                break;
+                }
             disp_binary(valor);
             delay(tiempo);        
         };
@@ -383,7 +478,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
         for (int i = 0; i<9; i++ )
         {
             int valor = TablaMn[i];
-            if (kbhit()) {
+            /* if (kbhit()) {
                 input1 = getch();
 
                 if (input1 == 224){
@@ -406,7 +501,19 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                     return;
                 }
 
-                } 
+                }  */
+                keypad(stdscr, TRUE);
+                nodelay(stdscr, TRUE);
+                switch (getch()) {
+                case 'a':
+                    return;
+                case KEY_UP:
+                tiempo = tiempo - 500;
+                break;
+                case KEY_DOWN:
+                tiempo = tiempo + 500;
+                break;
+                }
             disp_binary(valor);
             delay(tiempo);        
         };
@@ -431,7 +538,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
  do {
         output = 0x80;
         for (t = 0; t < 4; t++ ) {
-            if (kbhit()) {
+            /* if (kbhit()) {
                 input1 = getch();
 
                 if (input1 == 224){
@@ -454,7 +561,19 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                     return;
                 }
 
-                } 
+                }  */
+                keypad(stdscr, TRUE);
+                nodelay(stdscr, TRUE);
+                switch (getch()) {
+                case 'a':
+                    return;
+                case KEY_UP:
+                tiempo = tiempo - 500;
+                break;
+                case KEY_DOWN:
+                tiempo = tiempo + 500;
+                break;
+                }
             disp_binary(output);
             delay(tiempo);
             output = output >> 1; // Right shift
@@ -462,7 +581,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
 
         output = 0x11;
          for (t = 0; t < 4; t++ ) {
-            if (kbhit()) {
+            /* if (kbhit()) {
                 input1 = getch();
 
                 if (input1 == 224){
@@ -485,7 +604,19 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                     return;
                 }
 
-                } 
+                }  */
+                keypad(stdscr, TRUE);
+                nodelay(stdscr, TRUE);
+                switch (getch()) {
+                case 'a':
+                    return;
+                case KEY_UP:
+                tiempo = tiempo - 500;
+                break;
+                case KEY_DOWN:
+                tiempo = tiempo + 500;
+                break;
+                }
             disp_binary(output);
             delay(tiempo);
             output = output << 1; // Left shift 
@@ -493,7 +624,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
 
         output = 0x88;
         for (t = 0; t < 5; t++) {
-            if (kbhit()) {
+            /* if (kbhit()) {
                 input1 = getch();
 
                 if (input1 == 224){
@@ -516,7 +647,19 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                     return;
                 }
 
-                } 
+                }  */
+                keypad(stdscr, TRUE);
+                nodelay(stdscr, TRUE);
+                switch (getch()) {
+                case 'a':
+                    return;
+                case KEY_UP:
+                tiempo = tiempo - 500;
+                break;
+                case KEY_DOWN:
+                tiempo = tiempo + 500;
+                break;
+                }
             output = output >> 1; // Right Shift
             disp_binary(output);
             delay(tiempo);
@@ -525,7 +668,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
         output = 0x04;
 
         for (t = 0; t < 4; t++) {
-           if (kbhit()) {
+           /* if (kbhit()) {
                 input1 = getch();
 
                 if (input1 == 224){
@@ -548,7 +691,19 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                     return;
                 }
 
-                } 
+                }  */
+                keypad(stdscr, TRUE);
+                nodelay(stdscr, TRUE);
+                switch (getch()) {
+                case 'a':
+                    return;
+                case KEY_UP:
+                tiempo = tiempo - 500;
+                break;
+                case KEY_DOWN:
+                tiempo = tiempo + 500;
+                break;
+                }
             output = output << 1; // Left Shift
             disp_binary(output);
             delay(tiempo);
@@ -563,8 +718,16 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
 
 int main()
 {
+    //setbuf(stdin, NULL);
+
+    initscr();
+    keypad(stdscr, TRUE);
+    nodelay(stdscr, TRUE);
+    noecho();
     //pioInit();
-    strcpy(password, "admin");
+    //strcpy(password, "admin");
+
+    char input;
 
     const char led[] = {7, 8, 25, 24, 23, 18, 15, 14};
     for (int i = 0; i < 8; i++ ){
@@ -572,47 +735,50 @@ int main()
     }
 
     if(ingreso() == 0){
-        printf("Haz sido bloqueado del sistema\n");
+        printf("Haz sido bloqueado del sistema\n\r");
         return 0;
     }
 
-    printf(" Bienvenido al sistema! \n");
+    printf(" Bienvenido al sistema! \n\r");
 
     while(1){
-        //system("cls");
-        printf("Elija la secuencia que quiere ver: \n");
-        printf("1.Autofantastico \n");
-        printf("2.Choque\n");
-        printf("3.Carrera\n");
-        printf("4.Monstruo \n");
-        printf("5.Atrapaditas\n");        
-        printf("0.Salir\n");
+        system("clear");
+        printf("Elija la secuencia que quiere ver: \n\r");
+        printf("1.Autofantastico \n\r");
+        printf("2.Choque\n\r");
+        printf("3.Carrera\n\r");
+        printf("4.Monstruo \n\r");
+        printf("5.Atrapaditas\n\r");        
+        printf("0.Salir\n\r");
 
         int opcion;
 
-        scanf("%i", &opcion);
-        system("cls");
+        //scanf("%i", &opcion);
+
+        input = getchar();
+
+        //system("clear");
         
-        switch(opcion) {
-            case 1 :
+        switch(input) {
+            case '1' :
                 autoFantastico();
 
                 //pressKeyCheck();
 
                 break;
-            case 2:
+            case '2':
                 ChoqueT();
                 break;
-            case 3:
+            case '3':
                 Carrera();
                 break;
-            case 4 :
+            case '4' :
                 Monstruo();
                 break;
-            case 5 :
+            case '5' :
                 Atrapaditas();
                 break;
-            case 0 :
+            case '0' :
                 printf("Adios!");
                 return 0;
                 break;
@@ -621,4 +787,6 @@ int main()
                 break;
         }
     }
+
+    endwin();
 }
