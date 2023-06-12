@@ -156,7 +156,7 @@ void delay(int a){
 int delayAssembly(int tiempo){
  int i;
  int input1, input2;
- int resultado = 1;
+ int resultado = tiempo;
     unsigned int j = 0x2fffff; //raspberry 0x3fffff;
     for (i = 0; i < tiempo; i++) {
         for (j = 0; j < 65535; ++j) {
@@ -172,11 +172,11 @@ int delayAssembly(int tiempo){
                 }
 
                 if (input2 == 72) { // si input es up key 
-                    resultado = tiempo - 500;
+                    resultado = resultado - 500;
                 }
 
                 if (input2 == 80) { // si input es down key
-                    resultado = tiempo + 500;
+                    resultado = resultado + 500;
                 }  
 
                 } else {

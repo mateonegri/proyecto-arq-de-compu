@@ -19,17 +19,18 @@ loop: LDRB R6,[R5],#1
       MOV R0,R6
       BL disp_binary //Cambiar el dispbinary xq los leds son active low
       ADD R4,R4,#1
+      LDR R7, [R7]
       MOV R0, R7
       BL delayAssembly
       CMP R0, #0
-      BE end
+      BEQ finish
       MOV R0, R7
 
       CMP R4, #9
       BEQ monstruo_start
       B loop
 
- end:     POP {R4, R5, R6, R7, PC}
+ finish:     POP {R4, R5, R6, R7, PC}
 
 .global atrapaditas
 atrapaditas: 
@@ -42,11 +43,12 @@ loop1: MOV R6, R5
       LSR R5, R5, #1
       MOV R0, R6
       BL disp_binary
+      LDR R4, [R4]
       MOV R0, R4
       BL delayAssembly
       CMP R0, #0
-      BE end
-      MOV R0, R4
+      BEQ finish
+      MOV R4, R0
 
       SUBS R7,R7,#1
       BNE loop1
@@ -58,11 +60,12 @@ loop2: MOV R6, R5
       LSL R5, R5, #1
       MOV R0, R6
       BL disp_binary
+      LDR R4, [R4]
       MOV R0, R4
       BL delayAssembly
       CMP R0, #0
-      BE end
-      MOV R0, R4
+      BEQ finish
+      MOV R4, R0
 
       SUBS R7,R7,#1
       BNE loop2
@@ -74,11 +77,12 @@ loop3: MOV R6, R5
       LSL R5, R5, #1
       MOV R0, R6
       BL disp_binary
+      LDR R4, [R4]
       MOV R0, R4
       BL delayAssembly
       CMP R0, #0
-      BE end
-      MOV R0, R4
+      BEQ finish
+      MOV R4, R0
 
       SUBS R7,R7,#1
       BNE loop3
@@ -90,11 +94,12 @@ loop4: MOV R6, R5
       LSL R5, R5, #1
       MOV R0, R6
       BL disp_binary
+      LDR R4, [R4]
       MOV R0, R4
       BL delayAssembly
       CMP R0, #0
-      BE end
-      MOV R0, R4
+      BEQ finish
+      MOV R4, R0
 
       SUBS R7,R7,#1
       BNE loop4
@@ -103,7 +108,7 @@ loop4: MOV R6, R5
       CMP R0, #0
       BNE start
 
- end: POP {R4, R5, R6, R7, R8, PC}
+ finish: POP {R4, R5, R6, R7, R8, PC}
 
 .data
 array:
@@ -118,4 +123,4 @@ array:
       .byte 0xFF
 
 delayDefault: DCD   1500 
-.end
+.finish
