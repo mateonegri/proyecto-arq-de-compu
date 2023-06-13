@@ -14,11 +14,11 @@
 #define EASY_PIO_H
 
 // Include statements
-// #include <sys/mman.h>
+#include <sys/mman.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
-// #include <unistd.h>
+#include <unistd.h>
 
 /////////////////////////////////////////////////////////////////////
 // Constants
@@ -898,7 +898,7 @@ short spiSendReceive16(short send) {
 /////////////////////////////////////////////////////////////////////
 
 void uartInit(int baud) {
-    unsigned int fb = 12000000/baud; // 3 MHz UART clock
+    uint fb = 12000000/baud; // 3 MHz UART clock
     
     pinMode(14, ALT0);
     pinMode(15, ALT0);

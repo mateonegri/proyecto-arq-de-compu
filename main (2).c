@@ -12,12 +12,7 @@
 #include <termios.h>
 #include <unistd.h>
 #include <ncurses.h>
-
-//extern void monstruo();
-//extern void atrapaditas();
-
-
-
+#include "EasyPIO.h"
 
 #define ENTER 13
 #define BACKSPACE 8
@@ -71,24 +66,54 @@ unsigned char TablaMn[] = {0x80, 0x81, 0x82, 0x84, 0x88, 0x90, 0xA0, 0xC0, 0xFF}
 } 
 
  // Funcion para mostrar en binario
-void disp_binary(int i) {
+void disp_binary(int i, int option) {
     int t;
-    int n;
+    int n = 0;
     const char led[] = {7, 8, 25, 24, 23, 18, 15, 14};
     //system("cls");
+    printf("\033[2J");
+    unsigned int k = 10;
+    while (k--)
+    printf("\033[F");
+    
+    switch (option) {
+  case 1:
+    printf("\033[1;30mSECUENCIA:\033[0m \033[1;30mAuto Fantastico\033[0m\n\r\n\r");
+    break;
+  case 2:
+    printf("\033[1;30mSECUENCIA:\033[0m \033[1;30mEl Choque\033[0m\n\r\n\r");
+    break;
+  case 3:
+    printf("\033[1;30mSECUENCIA:\033[0m \033[1;30mLa Carrera\033[0m\n\r\n\r");
+    break;
+  case 4:
+    printf("\033[1;30mSECUENCIA:\033[0m \033[1;30mEl Monstruo\033[0m\n\r\n\r");
+    break;
+  case 5:
+    printf("\033[1;30mSECUENCIA:\033[0m \033[1;30mAtrapaditas\033[0m\n\r\n\r");
+    break;
+  case 0:
+    break;
+  }
+    
+    
     for (t = 128; t > 0; t = t/2) {
 
         if ( i & t) {
-            printf("1");
-            //digitalWrite(led[n], 0);
+             printf("1");
+            digitalWrite(led[n], 1);
         } else {
-            printf("0");
-            //digitalWrite(led[n], 1);
+             printf("0");
+            digitalWrite(led[n], 0);
         }
 
         n++;
     }
-     printf("\n\r");
+    
+    printf("\n\r");
+    printf("\033[1;30mPresione la tecla A para salir\033[0m\n\r");
+    printf("\033[1;30mPresione la flecha para arriba para aumentar la velocidad\033[0m\n\r");
+    printf("\033[1;30mPresione la flecha para abajo para disminuir la velocidad\033[0m\n\r");
 } 
 
 /////////////////Comprobar Contraseña///////////////////////////
@@ -183,7 +208,8 @@ int delayAssembly(int tiempo){
  int i;
  int input1, input2;
  int resultado = tiempo;
-    unsigned int j = 0x2fffff; //raspberry 0x3fffff;
+ 
+    unsigned int j = 0x3fffff; //raspberry 0x3fffff;
     for (i = 0; i < tiempo; i++) {
         for (j = 0; j < 65535; ++j) {
             /* if (kbhit()) {
@@ -208,11 +234,15 @@ int delayAssembly(int tiempo){
                 } else {
                     return resultado = 0;
                 } */
+               
+                }
+        }
+        //while (j) j--;
                 keypad(stdscr, TRUE);
                 nodelay(stdscr, TRUE);
                 switch (getch()) {
                 case 'a':
-                    return;
+                    return 0;
                 case KEY_UP:
                 resultado = tiempo - 500;
                 break;
@@ -220,9 +250,7 @@ int delayAssembly(int tiempo){
                 resultado = tiempo + 500;
                 break;
                 }
-        }
-        //while (j) j--;
-    }
+                
 
     return resultado;
 }
@@ -240,6 +268,8 @@ void autoFantastico() {
     printf("Presione la tecla 'a' si quiere salir!\n\r");
     printf("Presione la flecha hacia arriba para aumentar la velocidad!\n\r");
     printf("Presione la flecha hacia abajo para disminuir la velocidad!\n\r");
+    printf("\n\r\n\r");
+    refresh(); 
 
     do {
 
@@ -290,7 +320,7 @@ void autoFantastico() {
 
 
             
-            disp_binary(output);
+            disp_binary(output, 1);
             delay(tiempo);
             output = output >> 1; // Right shift
         }
@@ -340,7 +370,7 @@ void autoFantastico() {
                 }
 
             output = output << 1;
-            disp_binary(output);
+            disp_binary(output, 1);
             delay(tiempo);
         }
 
@@ -399,7 +429,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                 tiempo = tiempo + 500;
                 break;
                 }
-            disp_binary(valor);
+            disp_binary(valor, 3);
             delay(tiempo);
             } 
     }
@@ -456,13 +486,18 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                 tiempo = tiempo + 500;
                 break;
                 }
-            disp_binary(valor);
+            disp_binary(valor, 2);
             delay(tiempo);        
         };
     };
 }; 
 
+extern void Monstruo();
+extern void Atrapaditas();
+
+
 // Secuencia el Monstruo por tabla
+/*
 
 void Monstruo() {
 
@@ -501,7 +536,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                     return;
                 }
 
-                }  */
+                }  
                 keypad(stdscr, TRUE);
                 nodelay(stdscr, TRUE);
                 switch (getch()) {
@@ -514,13 +549,15 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                 tiempo = tiempo + 500;
                 break;
                 }
-            disp_binary(valor);
+            disp_binary(valor, 4);
             delay(tiempo);        
         };
     };
 
 
 }
+*/
+/*
 
 void Atrapaditas() {
 
@@ -561,7 +598,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                     return;
                 }
 
-                }  */
+                }  
                 keypad(stdscr, TRUE);
                 nodelay(stdscr, TRUE);
                 switch (getch()) {
@@ -574,7 +611,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                 tiempo = tiempo + 500;
                 break;
                 }
-            disp_binary(output);
+            disp_binary(output, 5);
             delay(tiempo);
             output = output >> 1; // Right shift
         }
@@ -604,7 +641,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                     return;
                 }
 
-                }  */
+                }  
                 keypad(stdscr, TRUE);
                 nodelay(stdscr, TRUE);
                 switch (getch()) {
@@ -617,7 +654,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                 tiempo = tiempo + 500;
                 break;
                 }
-            disp_binary(output);
+            disp_binary(output, 5);
             delay(tiempo);
             output = output << 1; // Left shift 
         }
@@ -647,7 +684,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                     return;
                 }
 
-                }  */
+                }  
                 keypad(stdscr, TRUE);
                 nodelay(stdscr, TRUE);
                 switch (getch()) {
@@ -661,7 +698,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                 break;
                 }
             output = output >> 1; // Right Shift
-            disp_binary(output);
+            disp_binary(output, 5);
             delay(tiempo);
         }
 
@@ -691,7 +728,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                     return;
                 }
 
-                }  */
+                }  
                 keypad(stdscr, TRUE);
                 nodelay(stdscr, TRUE);
                 switch (getch()) {
@@ -705,7 +742,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
                 break;
                 }
             output = output << 1; // Left Shift
-            disp_binary(output);
+            disp_binary(output, 5);
             delay(tiempo);
         }
 
@@ -714,6 +751,7 @@ printf("Presione la flecha hacia abajo para disminuir la velocidad!");
 
 
 }
+*/
 
 
 int main()
@@ -724,14 +762,14 @@ int main()
     keypad(stdscr, TRUE);
     nodelay(stdscr, TRUE);
     noecho();
-    //pioInit();
+    pioInit();
     //strcpy(password, "admin");
 
     char input;
 
     const char led[] = {7, 8, 25, 24, 23, 18, 15, 14};
     for (int i = 0; i < 8; i++ ){
-        // pinMode(led[i], OUTPUT);
+        pinMode(led[i], OUTPUT);
     }
 
     if(ingreso() == 0){
@@ -790,3 +828,14 @@ int main()
 
     endwin();
 }
+
+
+
+
+
+
+
+
+
+
+
